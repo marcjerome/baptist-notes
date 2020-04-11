@@ -2,13 +2,15 @@
 {% load static %}
 {%block content%}
 <link rel="stylesheet" href="{% static 'preachings/css/preaching_detail.css' %}">
-    <header class="container-fluid w-75 mx-auto">
+    <header class="container-fluid mt-5">
         <section class="mt-4 mb-5 text-center">
-            <h1 id="heading-title text-center"><b>{{preachings.title}}</b></h1>
-            <hr class="mx-auto w-75">
+            <h1 id="heading-title"><b>{{preachings.title}}</b></h1>
+            <h5 class="mt-4 mb-3 ">{{preachings.date}}</h5>
+            <h5 class="mt-2 mb-4">Posted by {{preachings.user.get_full_name}}</h5>
+            <hr class="border">
         </section>
         <section class="text-left w-75 mx-auto">
-            <h2 id="sub-heading">{{preachings.text | safe}}</h2>
+            {{preachings.text | safe}}
         </section>
         <section class="mt-5">
             
@@ -16,7 +18,7 @@
     </header>
 
     <section class="container-fluid w-75 mx-auto">
-        <section class="text-left w-75 mx-auto">
+        <section class="text-left ">
             <h4 id="">{{preachings.user.get_full_name}}</h4>
             <h4>{{preachings.user.bio}}</h4>
         </section>

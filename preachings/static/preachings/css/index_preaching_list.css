@@ -1,0 +1,38 @@
+#heading-title {
+    font-size: 3.4em;
+}
+
+#sub-heading {
+    font-size: 2.4em;
+}
+
+#sub-heading-2 {
+    font-size: 2.1em;
+}
+
+a {
+    color: black;
+}
+
+.note-article {
+    height: auto;
+}
+
+#tag {
+   
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    #heading-title {
+        font-size: 9vw;
+    }
+
+    #sub-heading {
+        font-size: 3.0vw;
+    }
+    
+    #sub-heading-2 {
+        font-size: 1.8vw;
+    }
+}

@@ -1,0 +1,28 @@
+{% extends 'preachings/base.html'%}
+{% load static %}
+{%block content%}
+<link rel="stylesheet" href="{% static 'preachings/css/preaching_detail.css' %}">
+    <header class="container-fluid w-75 mx-auto">
+        <section class="mt-4 mb-5 text-center">
+            <h1 id="heading-title text-center"><b>{{preachings.title}}</b></h1>
+            <hr class="mx-auto w-75">
+        </section>
+        <section class="text-left w-75 mx-auto">
+            <h2 id="sub-heading">{{preachings.text | safe}}</h2>
+        </section>
+        <section class="mt-5">
+            
+        </section>
+    </header>
+
+    <section class="container-fluid w-75 mx-auto">
+        <section class="text-left w-75 mx-auto">
+            <h4 id="">{{preachings.user.get_full_name}}</h4>
+            <h4>{{preachings.user.bio}}</h4>
+        </section>
+    
+    </section>
+    
+    
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{%include 'preachings/base.html'%}
+{% load static%}
+{%block content%}
+    <link rel="stylesheet" href="{% static 'preachings/css/preaching_create.css' %}">
+    <header id="header" class="container-fluid w-75 mx-auto mt-1 mb-5">
+        <h1><b>Write a Post</b></h1>
+    </header>
+
+    <form action="{% url 'preaching_create' %}" method="POST" id="form" class="form-group w-75 mx-auto">
+        {% csrf_token %}
+        <div class="container ml-auto mr-auto"></div>
+            <ul class="container-fluid list-unstyled">
+                <label class="mb-2"for="title">Title</label>
+                <li id="title" class="">{{ form.title }}</li>
+                <label  class="mb-2 mt-4" for="body">Body</label>
+                <li id="body" class="contact">{{ form.text }}</li>
+                <label  class="mb-2 mt-4" for="date">Date</label>
+                <li id="date" class="contact">{{ form.date }}</li>
+                <label  class="mb-2 mt-4 " for="privacy">Private</label>
+                <li  class="mb-2" id="privacy" class="contact">{{ form.privacy }}</li>
+                <li id="message" class="mt-2 mb-5"><input type="submit" class="btn btn-primary" value="Post"></li>
+            </ul>
+
+            
+         </div>
+    </form>
+
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{%endblock%}

@@ -1,0 +1,50 @@
+{% extends 'preachings/base.html'%}
+{%load static%}
+{% block content%}
+        <link rel="stylesheet" href="{% static 'preachings/css/index_preaching_list.css' %}">
+        <header class="container-fluid col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-1 mb-5 p-5">
+            <section class="mt-4 mb-5">
+                <h1 id="heading-title">Baptist Notes</h1>
+            </section>
+            <section>
+                <h2 id="sub-heading">A compilation of sermons of <b><u>Baptists</u></b>. 
+                    Based only on the scriptures, <b><u>the sole authority for faith and practice</u></b>.  </h2>
+            </section>
+            <section class="mt-5">
+                <form class="form-group">
+                    <h3 id="sub-heading-2"><label for="search">You can search notes, tags, or any keywords! </label></h3 >
+                    <div class="container row">
+
+                    <input type="text" id="search" placeholder="Search here..." class="form-control col-sm-8 col-lg-8 col-xl-8" required>
+                    <button type="submit" class="col-sm-1 col-lg-1 col-xl-1 btn btn-primary ml-2">Search</button>
+                    </div>
+                </form>
+            </section>
+        </header>
+        
+        <main id="main" class="container-fluid col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-5 p-5">
+        {% for preaching in preaching_list%}
+            <article class="card border-left-0 border-right-0 border-bottom-0 p-3 note-article">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a href="{% url 'preaching_detail' slug=preaching.slug %}"><h1>{{preaching.title}}</h1></a>
+                        <ul class="list-unstyled list-inline">
+                            {%for tag in preaching.tags.all %}
+                                <li class=" bg-dark 
+                                list-inline-item text-white p-2 rounded" id="tag">{{tag.title}}</li>
+
+                                {% empty %}
+                                <li>No tag</li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="mb-0">{{preaching.user.get_full_name | default:preaching.user.username}}</p>
+                        <p class="mt-0">{{preaching.date}}</p> 
+                    </div>
+                </div>
+            </article>
+        {%endfor%}
+        </main>
+    </div>
+{%endblock%}

@@ -1,0 +1,12 @@
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+
+    #cke_id_text{
+        width: 100%;
+    }
+
+    .django-ckeditor-widget {
+        width: 100%;
+    }
+
+}

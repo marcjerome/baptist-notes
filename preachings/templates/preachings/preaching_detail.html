@@ -3,24 +3,34 @@
 {%block content%}
 <link rel="stylesheet" href="{% static 'preachings/css/preaching_detail.css' %}">
     <header class="container-fluid mt-5">
-        <section class="mt-4 mb-5 text-center">
+        <section class="mt-4 mb-2 text-center">
             <h1 id="heading-title"><b>{{preachings.title}}</b></h1>
             <h5 class="mt-4 mb-3 ">{{preachings.date}}</h5>
-            <h5 class="mt-2 mb-4">Posted by {{preachings.user.get_full_name}}</h5>
-            <hr class="border">
+            <h5 class="mt-2 mb-1">Posted by {{preachings.user.get_full_name}}</h5>
         </section>
+        {%if user == preachings.user %}
+        <section class="container text-center">
+            <div class="row justify-content-center">
+                <a href="{% url 'preaching_update' preachings.slug %}" class="link btn btn-primary p-2 m-2">Edit</a>
+                <a href="{% url 'preaching_delete' preachings.slug %}" class="link btn btn-danger p-2 m-2 ">Delete</a>
+            </div>
+        </section>
+        
+        {% endif %}
+       
+        <hr class="border">
+      
+        
         <section class="text-left w-75 mx-auto">
             {{preachings.text | safe}}
         </section>
-        <section class="mt-5">
-            
-        </section>
+        <hr class="border">
     </header>
-
-    <section class="container-fluid w-75 mx-auto">
+    
+    <section class="container-fluid w-75 mx-auto mt-4 ">
         <section class="text-left ">
-            <h4 id="">{{preachings.user.get_full_name}}</h4>
-            <h4>{{preachings.user.bio}}</h4>
+            <h4 class="mb-4"><b>- {{preachings.user.get_full_name}}</b></h4>
+            <h4 class="ml-5">{{preachings.user.bio}}</h4>
         </section>
     
     </section>

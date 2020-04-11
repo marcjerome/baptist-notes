@@ -1,9 +1,18 @@
 {% extends 'preachings/base.html' %}
-
+{% load static %}
 {% block content %}
-    <form method="post">{% csrf_token %}
-        <p>Are you sure you want to delete it"?</p>
-        <input type="submit" value="Confirm">
-    </form>
+<link rel="stylesheet" href="{% static 'preachings/css/preaching_confirm_delete.css' %}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="alert alert-danger">
+                <form method="post">
+                    {% csrf_token %}
+                    <p>Are you sure you want to delete it?</p>
+                    <a href="{% url 'preaching_detail' preaching.slug %}" class="ml-5 mr-1 btn btn-info"> Cancel</a>
+                    <button type="submit" class="btn btn-light ml-2">Confirm Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

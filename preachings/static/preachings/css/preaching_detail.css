@@ -14,6 +14,17 @@
     width: 100%;
 }
 
+.link {
+    text-decoration:none;
+    color: white;
+}
+
+.link:hover {
+   color:white;
+    text-decoration: none;
+}
+
+
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) { 
     #heading-title {

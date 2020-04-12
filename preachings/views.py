@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .forms import PreachingForm
-from .models import Preaching
+from .models import Preaching, Tag
 
 class PreachingDetailView(DetailView):
     model = Preaching
@@ -45,3 +46,13 @@ class PreachingUpdate(UpdateView):
     slug_field = 'slug'
     template_name = 'preachings/preaching_update.html'
     fields = ['title', 'text', 'date', 'privacy']
+
+#To do: View that renders preachings based on tag 
+#Maybe subclass preachinglist
+
+class TaggedPreachingList(ListView):
+    template_name = 'preachings/index_preaching_list.html'
+
+    def get_queryset(self):
+        self.tag = Tag.objects.get(title__iexact = self.kwargs['tag'])
+        return Preaching.objects.filter(tags=self.tag)

@@ -24,6 +24,9 @@
     text-decoration: none;
 }
 
+.tag {
+    font-size: 0.8em;
+}
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) { 

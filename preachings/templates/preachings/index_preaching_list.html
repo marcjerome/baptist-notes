@@ -31,11 +31,12 @@
                         <ul class="list-unstyled list-inline">
                             {%for tag in preaching.tags.all %}
                                 <li class=" bg-dark 
-                                list-inline-item text-white p-2 rounded" id="tag">{{tag.title}}</li>
+                                    list-inline-item text-white p-2 rounded" id="tag">
+                                        <a class="text-white" href="{% url 'tagged_preaching_list' tag.title %}">{{tag.title}}</a>
+                                </li>
 
                                 {% empty %}
-                                <li class=" bg-dark 
-                                list-inline-item text-white p-2 rounded" id="tag">No Tag</li>
+                                
                             {%endfor%}
                         </ul>
                     </div>

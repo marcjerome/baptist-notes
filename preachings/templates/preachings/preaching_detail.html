@@ -5,6 +5,11 @@
     <header class="container-fluid mt-5">
         <section class="mt-4 mb-2 text-center">
             <h1 id="heading-title"><b>{{preachings.title}}</b></h1>
+            <ul class="list-unstyled list-inline">
+                {% for tag in preachings.tags.all %}
+                    <li class="list-inline-item lead bg-dark text-white pl-2 pr-2 pt-1 pb-1 tag ">{{tag.title}}</li>
+                {% endfor %}
+            </ul>
             <h5 class="mt-4 mb-3 ">{{preachings.date}}</h5>
             <h5 class="mt-2 mb-1">Posted by {{preachings.user.get_full_name}}</h5>
         </section>

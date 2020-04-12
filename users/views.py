@@ -1,12 +1,13 @@
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from django.views.generic import DetailView
+from django.views import View
+from django.contrib.auth import logout
 from preachings.models import Preaching
 
 class UserDetailView(DetailView):
     template_name = 'users/user_detail.html'
-    
 
     def get_queryset(self):
         return get_user_model().objects.filter(pk=self.kwargs['pk'])

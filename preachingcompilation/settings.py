@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+    'crispy_forms',
     'preachings',
     'ckeditor',
 ]
@@ -141,3 +142,5 @@ CKEDITOR_CONFIGS = {
 
 LOGIN_REDIRECT_URL = 'index_preaching_list'
 LOGOUT_REDIRECT_URL = 'index_preaching_list'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

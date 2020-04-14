@@ -1,3 +1,4 @@
+{% load crispy_forms_tags%}
 
 <!DOCTYPE html>
 <html>
@@ -49,6 +50,11 @@
                     </div>
                 </li>
               {% else %}
+              <form class="form-inline my-2 my-lg-0" action="{% url 'register' %}">
+                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Register</button>
+                <input type="hidden" name="next" value="{{ request.path }}">
+              </form>
+              
               <form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
                 <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Log In</button>
                 <input type="hidden" name="next" value="{{ request.path }}">

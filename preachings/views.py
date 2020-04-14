@@ -28,7 +28,7 @@ class PreachingList(ListView):
     model = Preaching
     template_name = 'preachings/index_preaching_list.html'
 
-class PreachingDelete(DeleteView):
+class PreachingDelete(LoginRequiredMixin, DeleteView):
     model = Preaching
     success_url = reverse_lazy('index_preaching_list')
     template_name = 'preachings/preaching_confirm_delete.html'
@@ -41,11 +41,18 @@ class PreachingDelete(DeleteView):
         return super().dispatch(request, *args, **kwargs)
         
        
-class PreachingUpdate(UpdateView):
+class PreachingUpdate(LoginRequiredMixin, UpdateView):
     model = Preaching
     slug_field = 'slug'
     template_name = 'preachings/preaching_update.html'
     fields = ['title', 'text', 'date', 'privacy']
+
+    def dispatch(self, request, *args, **kwargs):
+        preaching = self.get_object()
+        if preaching.user.id != request.user.id:
+            return redirect('index_preaching_list')
+        return super().dispatch(request, *args, **kwargs)
+        
 
 #To do: View that renders preachings based on tag 
 #Maybe subclass preachinglist

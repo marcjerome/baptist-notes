@@ -41,13 +41,19 @@
                     <a class="dropdown-item" href="{% url 'preaching_create' %}">Write Post</a>
                     <a class="dropdown-item" href="#">Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
-                  </div>
+                    <form action="{% url 'logout' %}" method="POST">
+                      {% csrf_token %}
+                      <input type="submit" class="dropdown-item" value="Log out">
+                      <input type="hidden" name="next" value="{{request.path}}">
+                    </form>
+                    </div>
                 </li>
               {% else %}
-              <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log In</button>
+              <form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
+                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Log In</button>
+                <input type="hidden" name="next" value="{{ request.path }}">
               </form>
+              
               {%endif%}
             </div>
           </nav>

@@ -139,4 +139,5 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+LOGIN_REDIRECT_URL = 'index_preaching_list'
 LOGOUT_REDIRECT_URL = 'index_preaching_list'

@@ -5,6 +5,7 @@ from django.views.generic import DetailView
 from django.views import View
 from django.contrib.auth import logout
 from preachings.models import Preaching
+from django.contrib.auth import views as auth_views
 
 class UserDetailView(DetailView):
     template_name = 'users/user_detail.html'
@@ -16,3 +17,12 @@ class UserDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['preachings'] = Preaching.objects.filter(user=get_user_model().objects.get(pk=self.kwargs['pk']))
         return context
+'''
+class LoginView(auth_views.LoginView):
+    
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        auth_login(self.request, form.get_user())
+        return HttpResponseRedirect(self.request.META['HTTP_REFERER'])
+
+'''

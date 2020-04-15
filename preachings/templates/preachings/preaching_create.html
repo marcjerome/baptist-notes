@@ -18,6 +18,18 @@
                 <li id="date" class="contact">{{ form.date }}</li>
                 <label  class="mb-2 mt-4 " for="privacy">Private</label>
                 <li  class="mb-2" id="privacy" class="contact">{{ form.privacy }}</li>
+                <label  class="mb-2 mt-4 " for="tags">Tags</label>
+                <div class="row container">
+                   
+                    <li  class="mb-2 col-lg-8" id="tags"> {{ form.tags }} </li>
+                    <li  class="mb-2 col-lg-4" id="add_tag"> Add </li>
+
+                </div>
+
+                <ul id="tag-list" class="list-unstyled">
+       
+                </ul>
+
                 <li id="message" class="mt-2 mb-5"><input type="submit" class="btn btn-primary" value="Post"></li>
             </ul>
 
@@ -28,4 +40,25 @@
 
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<script>
+    let tagCounter = 0;
+
+    function deleteTag(){
+        this.parentNode.remove();
+    }   
+
+    document.getElementById("add_tag").addEventListener('click', function(){
+        var li_1 = document.createElement('li');
+        li_1.textContent = document.getElementById('id_tags').value;
+        console.log(li_1);
+
+        var li_span = document.createElement('span');
+        li_span.textContent = ' Delete ';
+        li_span.addEventListener('click', deleteTag);
+        li_1.appendChild(li_span);
+        document.getElementById("tag-list").appendChild(li_1);
+    });     
+</script>
+
 {%endblock%}

@@ -44,6 +44,21 @@
 <script>
     let tagCounter = 0;
 
+    document.addEventListener('DOMContentLoaded', function() {
+       
+          // Initialize new request
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', '/tag/suggestions/');
+
+        // Send request
+        xhttp.send();
+ 
+        // Callback function for when request completes
+        xhttp.onload = () => {
+
+        }
+    });
+
     function deleteTag(){
         this.parentNode.remove();
     }   

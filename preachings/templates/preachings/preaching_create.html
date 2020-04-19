@@ -44,19 +44,37 @@
 <script>
     let tagCounter = 0;
 
+    //AJAX
     document.addEventListener('DOMContentLoaded', function() {
        
-          // Initialize new request
-        const xhttp = new XMLHttpRequest();
-        xhttp.open('GET', '/tag/suggestions/');
+       document.getElementById('id_tags').onkeyup = () => {
+           // initialize new request
+           const request = new XMLHttpRequest();
+           request.open("POST", "{% url 'tag_suggestions' %}");
 
-        // Send request
-        xhttp.send();
- 
-        // Callback function for when request completes
-        xhttp.onload = () => {
+           var keyword = document.getElementById('id_tags').value;
+           data = {"keyword": keyword};
 
-        }
+           //when request is finished
+           request.onload = () => {
+                console.log("Wala naman");
+               /* const data = JSON.parse(request.responseText);
+
+                console.log(data);
+                var li_1 = document.createElement('li');
+                li_1.textContent = data["keyword"]
+                document.getElementById("tag-list").appendChild(li_1);
+                return false;
+                */
+           }
+           
+           request.setRequestHeader("Content-Type", 'application/json;');
+           request.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
+           request.send(JSON.stringify(data));
+           console.log(data);
+           
+       };
+
     });
 
     function deleteTag(){

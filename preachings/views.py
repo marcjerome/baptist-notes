@@ -4,7 +4,9 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.http import JsonResponse, HttpResponse
 from .forms import PreachingForm
+import json
 from .models import Preaching, Tag
 
 class PreachingDetailView(DetailView):
@@ -54,12 +56,21 @@ class PreachingUpdate(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
         
 
-#To do: View that renders preachings based on tag 
-#Maybe subclass preachinglist
-
 class TaggedPreachingList(ListView):
     template_name = 'preachings/index_preaching_list.html'
 
     def get_queryset(self):
         self.tag = Tag.objects.get(title__iexact = self.kwargs['tag'])
         return Preaching.objects.filter(tags=self.tag)
+
+
+def tag_suggestions(request):
+    print('inside tag_suggestions ')
+    if request.method == 'POST':
+        data = json.loads(request.body) 
+        print(data['keyword'])
+        return JsonResponse('Test')
+       
+    else:
+        print('not ajax Test')
+        return HttpResponse('Test')

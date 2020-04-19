@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from django.urls import path
-from .views import PreachingDetailView, PreachingCreateView, PreachingList, PreachingUpdate, PreachingDelete, TaggedPreachingList
+from .views import tag_suggestions, PreachingDetailView, PreachingCreateView, PreachingList, PreachingUpdate, PreachingDelete, TaggedPreachingList
 
 urlpatterns = [
     path('', PreachingList.as_view(), name='index_preaching_list'),
@@ -8,8 +8,8 @@ urlpatterns = [
     path('note/update/<slug:slug>/', PreachingUpdate.as_view(), name='preaching_update'),
     path('note/delete/<slug:slug>/', PreachingDelete.as_view(), name='preaching_delete'),
     path('note/<slug:slug>/', PreachingDetailView.as_view(), name='preaching_detail'),
-    path('<str:tag>/', TaggedPreachingList.as_view(), name='tagged_preaching_list')
+    path('<str:tag>/', TaggedPreachingList.as_view(), name='tagged_preaching_list'),
+    path('note/add/tag', tag_suggestions, name='tag_suggestions')
 
 ]
 
-#2020-4-3-test

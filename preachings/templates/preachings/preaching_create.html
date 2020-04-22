@@ -19,15 +19,24 @@
                 <label  class="mb-2 mt-4 " for="privacy">Private</label>
                 <li  class="mb-2" id="privacy" class="contact">{{ form.privacy }}</li>
                 <label  class="mb-2 mt-4 " for="tags">Tags</label>
-                <div class="row container">
+                <div class="row container">               
+                    <div class="col-4">
+                        {{ form.tags }}
+                        <input type="button" onClick="addTag()" class="btn btn-info" value="Add Tag" id="add_tag">
+                    </div>
+                    <div class="col-4">
+                        <ul class="list-inline" id="tag_list"></ul>
+
+                    </div>  
+                    <div class="col-4" >
+                        <ul class="list-inline" id="tag_list_final"></ul>
+                    </div> 
                    
-                    <li  class="mb-2 col-lg-8" id="tags"> {{ form.tags }} </li>
-                    <li  class="mb-2 col-lg-4" id="add_tag"> Add </li>
 
                 </div>
 
-                <ul id="tag-list" class="list-unstyled">
-       
+                <ul id="tag-list" class="list-inline">
+                    
                 </ul>
 
                 <li id="message" class="mt-2 mb-5"><input type="submit" class="btn btn-primary" value="Post"></li>
@@ -40,58 +49,7 @@
 
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-
-<script>
-    let tagCounter = 0;
-
-    //AJAX
-    document.addEventListener('DOMContentLoaded', function() {
-       
-       document.getElementById('id_tags').onkeyup = () => {
-           // initialize new request
-           const request = new XMLHttpRequest();
-           request.open("POST", "{% url 'tag_suggestions' %}");
-
-           var keyword = document.getElementById('id_tags').value;
-           data = {"keyword": keyword};
-
-           //when request is finished
-           request.onload = () => {
-                console.log("Wala naman");
-               /* const data = JSON.parse(request.responseText);
-
-                console.log(data);
-                var li_1 = document.createElement('li');
-                li_1.textContent = data["keyword"]
-                document.getElementById("tag-list").appendChild(li_1);
-                return false;
-                */
-           }
-           
-           request.setRequestHeader("Content-Type", 'application/json;');
-           request.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
-           request.send(JSON.stringify(data));
-           console.log(data);
-           
-       };
-
-    });
-
-    function deleteTag(){
-        this.parentNode.remove();
-    }   
-
-    document.getElementById("add_tag").addEventListener('click', function(){
-        var li_1 = document.createElement('li');
-        li_1.textContent = document.getElementById('id_tags').value;
-        console.log(li_1);
-
-        var li_span = document.createElement('span');
-        li_span.textContent = ' Delete ';
-        li_span.addEventListener('click', deleteTag);
-        li_1.appendChild(li_span);
-        document.getElementById("tag-list").appendChild(li_1);
-    });     
-</script>
+<script>var csrftoken = '{{ csrf_token }}';</script>
+<script type="text/javascript" src="{% static 'preachings/js/preaching_create.js'%}"></script>
 
 {%endblock%}

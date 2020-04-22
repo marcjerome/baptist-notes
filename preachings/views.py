@@ -68,9 +68,14 @@ def tag_suggestions(request):
     print('inside tag_suggestions ')
     if request.method == 'POST':
         data = json.loads(request.body) 
-        print(data['keyword'])
-        return JsonResponse('Test')
-       
+
+        try:
+            tags = Tag.objects.filter(title__icontains = data['keyword'])
+            response_data = [tag.title for tag in tags]
+            return JsonResponse({'tag': response_data})
+        except ObjectDoesNotExist:
+            return JsonResponse('')
+      
     else:
         print('not ajax Test')
         return HttpResponse('Test')

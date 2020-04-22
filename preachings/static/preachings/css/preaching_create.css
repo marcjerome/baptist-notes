@@ -10,3 +10,8 @@
     }
 
 }
+
+#tag_list{
+    overflow: auto;
+    max-height: 10vh;
+}

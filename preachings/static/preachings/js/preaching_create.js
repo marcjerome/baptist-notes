@@ -1,12 +1,15 @@
 let tagCounter = 0;
+let formValueArray = new Array();
 let data = {}
 
+//ToDo: add the value of formValueArray to the hidden form from django. 
+// Also do the delete to delete the array content then replace again the value of form hidden from django
 
 //AJAX
 document.addEventListener('DOMContentLoaded', function() {
 
-   document.getElementById('id_tags').onkeyup = function(e){
-        let keyword = document.getElementById('id_tags').value;
+   document.getElementById('id_tag').onkeyup = function(e){
+        let keyword = document.getElementById('id_tag').value;
         let tagSuggestionList = document.getElementById("tag_list");
        // initialize new request
        const request = new XMLHttpRequest();
@@ -81,11 +84,13 @@ function suggestionAddTag(tag){
     spanli3.setAttribute('onClick', 'remove(\'' + tag + '\')');
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
+    formValueArray.push(tag);
     document.getElementById('tag_list_final').appendChild(li);
+
 }
 
 function addTag(){
-    let value = document.getElementById('id_tags').value;
+    let value = document.getElementById('id_tag').value;
     let li = document.createElement('li');
     li.setAttribute('class', 'list-inline-item m-3');
     li.setAttribute('id', value);
@@ -99,7 +104,7 @@ function addTag(){
     spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-white')
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
-
+    formValueArray.push(value);
     document.getElementById('tag_list_final').appendChild(li);
 }
 

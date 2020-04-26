@@ -1,7 +1,7 @@
 let tagCounter = 0;
 let formValueArray = new Array();
 let data = {}
-
+let tagFormValue = [];
 //ToDo: add the value of formValueArray to the hidden form from django. 
 // Also do the delete to delete the array content then replace again the value of form hidden from django
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let keyword = document.getElementById('id_tags').value;
             let tagSuggestionList = document.getElementById("tag_list");
 
-
+            console.log(formValueArray);
 
             while(tagSuggestionList.lastChild){
                 tagSuggestionList.removeChild(tagSuggestionList.lastChild);
@@ -85,6 +85,7 @@ function suggestionAddTag(tag){
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
     formValueArray.push(tag);
+    document.getElementById('id_tags').value = formValueArray.join(',');
     document.getElementById('tag_list_final').appendChild(li);
 
 }
@@ -105,13 +106,18 @@ function addTag(){
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
     formValueArray.push(value);
+    document.getElementById('id_tags').value = formValueArray.join(',');
     document.getElementById('tag_list_final').appendChild(li);
 }
 
 function remove(tag){
+    formValueArray.splice(formValueArray.indexOf(tag), 1);
+    document.getElementById('id_tags').value = formValueArray.join(',');
     let node = document.getElementById(tag);
     document.getElementById('tag_list_final').removeChild(node);
 }
+
+
 /*
 Sample Output:
 Counsel, Jesus Christ, Resurrection, Decision

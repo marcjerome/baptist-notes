@@ -26,6 +26,16 @@ class PreachingCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+'''
+    def get_form_kwargs(self):
+        kwargs = super(PreachingCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+'''
+    
 class PreachingList(ListView):
     model = Preaching
     template_name = 'preachings/index_preaching_list.html'

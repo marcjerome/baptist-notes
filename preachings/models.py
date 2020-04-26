@@ -11,7 +11,7 @@ class Preaching(models.Model):
     date = models.DateField()
     slug = models.SlugField(max_length=265, unique=True, blank=True, editable=False)
     privacy = models.BooleanField(default=True)
-    tags = models.ManyToManyField('Tag', related_name='preachings')
+    tags = models.ManyToManyField('Tag', blank=True, related_name='preachings')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self):

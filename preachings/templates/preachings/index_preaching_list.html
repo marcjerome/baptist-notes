@@ -41,7 +41,7 @@
                         </ul>
                     </div>
                     <div class="col-sm-4">
-                        <p class="mb-0">{{preaching.user.get_full_name | default:preaching.user.username}}</p>
+                        <p class="mb-0"><a href ="{% url 'user_detail' preaching.user.id%}">{{preaching.user.get_full_name | default:preaching.user.username}}</a></p>
                         <p class="mt-0">{{preaching.date}}</p> 
                     </div>
                 </div>

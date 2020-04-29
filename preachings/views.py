@@ -57,7 +57,7 @@ class PreachingUpdate(LoginRequiredMixin, UpdateView):
     model = Preaching
     slug_field = 'slug'
     template_name = 'preachings/preaching_update.html'
-    fields = ['title', 'text', 'date', 'privacy']
+    form_class = PreachingForm
 
     def dispatch(self, request, *args, **kwargs):
         preaching = self.get_object()
@@ -65,6 +65,16 @@ class PreachingUpdate(LoginRequiredMixin, UpdateView):
             return redirect('index_preaching_list')
         return super().dispatch(request, *args, **kwargs)
         
+
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'object'):
+            kwargs.update({'instance': self.object})
+        preaching = kwargs['instance']
+        tags = [tag.title for tag in preaching.tags.all()]
+        kwargs['initial'] = {'tags': ','.join(tags)}
+        return kwargs
 
 class TaggedPreachingList(ListView):
     template_name = 'preachings/index_preaching_list.html'
@@ -75,7 +85,7 @@ class TaggedPreachingList(ListView):
 
 
 def tag_suggestions(request):
-    print('inside tag_suggestions ')
+    print('inside only ')
     if request.method == 'POST':
         data = json.loads(request.body) 
 

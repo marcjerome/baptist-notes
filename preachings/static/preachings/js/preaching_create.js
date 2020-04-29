@@ -8,6 +8,32 @@ let tagFormValue = [];
 //AJAX
 document.addEventListener('DOMContentLoaded', function() {
 
+    let defaultKeyword = document.getElementById('id_tags').value;
+    let defaultKeywordArray = defaultKeyword.split(',');
+
+    if (defaultKeyword){
+        for (tag of defaultKeywordArray){
+            let li = document.createElement('li');
+            li.setAttribute('class', 'list-inline-item  m-3');
+            li.setAttribute('id', tag);
+            let spanLi2 = document.createElement('span');
+            spanLi2.textContent = tag;
+            spanLi2.setAttribute('class', 'bg-dark text-white p-2 ');
+            spanLi2.setAttribute('name', 'tags');
+            let spanli3 = document.createElement('span');
+            spanli3.textContent = 'X';
+            spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-white')
+            spanli3.setAttribute('onClick', 'remove(\'' + tag + '\')');
+            li.appendChild(spanLi2);
+            li.appendChild(spanli3);
+            formValueArray.push(tag);
+            document.getElementById('id_tags').value = formValueArray.join(',');
+            document.getElementById('tag_list_final').appendChild(li);
+        }
+       
+    }
+
+
    document.getElementById('id_tag').onkeyup = function(e){
         let keyword = document.getElementById('id_tag').value;
         let tagSuggestionList = document.getElementById("tag_list");

@@ -19,6 +19,22 @@
             <li id="date" class="contact">{{ form.date }}</li>
             <label  class="mb-2 mt-4 " for="privacy">Private</label>
             <li  class="mb-2" id="privacy" class="contact">{{ form.privacy }}</li>
+            <div class="row container">               
+                <div class="col-4">
+                    {{ form.tags }}
+                    <input type="text" id="id_tag" >
+                    <input type="button" onClick="addTag()" class="btn btn-info" value="Add Tag" id="add_tag">
+                </div>
+                <div class="col-4">
+                    <ul class="list-inline" id="tag_list"></ul>
+
+                </div>  
+                <div class="col-4" >
+                    <ul class="list-inline" id="tag_list_final"></ul>
+                </div> 
+               
+
+            </div>
             <li id="message" class="mt-2 mb-5"><input type="submit" class="btn btn-primary" value="Edit"></li>
         </ul>
 
@@ -29,5 +45,6 @@
 
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-
+<script>var csrftoken = '{{ csrf_token }}';</script>
+<script type="text/javascript" src="{% static 'preachings/js/preaching_create.js'%}"></script>
 {% endblock %}

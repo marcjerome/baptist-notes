@@ -140,6 +140,12 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'elasticsearch:9200'
+    },
+}
+
 LOGIN_REDIRECT_URL = 'index_preaching_list'
 LOGOUT_REDIRECT_URL = 'index_preaching_list'
 

@@ -34,7 +34,7 @@
                 </li>
 
               </ul>
-              {% if user.is_authenticated%}
+              {% if request.user.is_authenticated%}
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-white" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Account
@@ -46,8 +46,7 @@
                     <form action="{% url 'logout' %}" method="POST">
                       {% csrf_token %}
                       <input type="submit" class="dropdown-item" value="Log out">
-                      <input type="hidden" name="next" value="{{request.path}}"> <!--if naglogout sa profile page, i call na tay request.path so maiback ket awan met 
-                      request.user nan kasi naglog-out kaya ag error. Try aramid decorator or middleware for this?-->
+                      <input type="hidden" name="next" value="{{request.path}}"> 
                     </form>
                     </div>
                 </li>

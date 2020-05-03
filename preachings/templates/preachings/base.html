@@ -46,7 +46,8 @@
                     <form action="{% url 'logout' %}" method="POST">
                       {% csrf_token %}
                       <input type="submit" class="dropdown-item" value="Log out">
-                      <input type="hidden" name="next" value="{{request.path}}">
+                      <input type="hidden" name="next" value="{{request.path}}"> <!--if naglogout sa profile page, i call na tay request.path so maiback ket awan met 
+                      request.user nan kasi naglog-out kaya ag error. Try aramid decorator or middleware for this?-->
                     </form>
                     </div>
                 </li>

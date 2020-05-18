@@ -8,6 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from .forms import PreachingForm
 import json
 from .models import Preaching, Tag
+from .documents import PreachingDocument
 
 class PreachingDetailView(DetailView):
     model = Preaching
@@ -99,3 +100,10 @@ def tag_suggestions(request):
     else:
         print('not ajax Test')
         return HttpResponse('Test')
+
+
+def search(request):
+    q = request.GET.get('q')
+    preachings = PreachingDocument.search().filter("match", title=q)
+    preaching = preachings.to_queryset()
+    return render(request, 'preachings/search.html', {'preachings':preaching})

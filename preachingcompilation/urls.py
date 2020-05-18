@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'admin/', admin.site.urls),
     path(r'', include('users.urls')),
     path('', include('preachings.urls')),
-
+    #path('', include('search.urls')),
 ]

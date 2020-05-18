@@ -11,11 +11,11 @@
                     Based only on the scriptures, <b><u>the sole authority for faith and practice</u></b>.  </h2>
             </section>
             <section class="mt-5">
-                <form class="form-group">
+                <form class="form-group" method="GET" action="{% url 'search' %}">
                     <h3 id="sub-heading-2"><label for="search">You can search notes, tags, or any keywords! </label></h3 >
                     <div class="container row">
 
-                    <input type="text" id="search" placeholder="Search here..." class="form-control col-sm-8 col-lg-8 col-xl-8" required>
+                    <input type="text" name="q" placeholder="Search here..." class="form-control col-sm-8 col-lg-8 col-xl-8" required>
                     <button type="submit" class="col-sm-1 col-lg-1 col-xl-1 btn btn-primary ml-2">Search</button>
                     </div>
                 </form>

@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'django_elasticsearch_dsl',
     'preachings',
     'ckeditor',
+    
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -140,9 +142,9 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-ELASTICSEARCH_DSL = {
+ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'elasticsearch:9200'
+        'hosts': 'localhost:9200'
     },
 }
 

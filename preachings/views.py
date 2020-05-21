@@ -105,5 +105,7 @@ def tag_suggestions(request):
 def search(request):
     q = request.GET.get('q')
     preachings = PreachingDocument.search().filter("match", title=q)
+    preachings = PreachingDocument.search().filter("match", text=q)
+    #preachings = PreachingDocument.search().filter("match", tags=q)#not sure for manytomanyfield if how
     preaching = preachings.to_queryset()
     return render(request, 'preachings/search.html', {'preachings':preaching})

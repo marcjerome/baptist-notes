@@ -1,5 +1,12 @@
+body {
+    font-family: 'Lato';
+}
+#head {
+    background: linear-gradient(to right, #001b38 , #0352a0  );
+}
+
 #heading-title {
-    font-size: 3.4em;
+    font-size: 1.5em;
 }
 
 #sub-heading {
@@ -24,15 +31,28 @@ a {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) { 
+    nav {
+        width: 100%;
+    }
+
+    header{
+        width: 105%;
+    }
+
     #heading-title {
-        font-size: 9vw;
+        font-size: 3vw;
     }
 
     #sub-heading {
-        font-size: 3.0vw;
+        font-size: 1.5vw;
     }
     
     #sub-heading-2 {
-        font-size: 1.8vw;
+        font-size: 1.5vw;
     }
+
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+      }
 }

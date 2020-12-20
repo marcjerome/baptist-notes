@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl import Document, fields
+'''from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
 from .models import Preaching, Tag
 from django.contrib.auth import get_user_model
@@ -28,4 +28,4 @@ class PreachingDocument(Document):
         if isinstance(related_instance, User):
             return related_instance.user
         elif isinstance(related_instance, Tag):
-            return related_instance.tags_set.all()
+            return related_instance.tags_set.all()'''

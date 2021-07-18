@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from users import models
 from django.template.loader import render_to_string
-from .views import PreachingList, PreachingDelete, PreachingCreateView
+from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView
 from .models import Preaching, Tag
 
 class HomePageTest(TestCase):
@@ -116,7 +116,6 @@ class DeletePreachingPageTest(TestCase):
         response = self.client.get('/note/delete/{slug}/'.format(slug='random'))
         self.assertEqual(response.status_code,404)
 
-    
     def test_redirect_status_code_preaching_delete_page_user_unauthenticated(self):
         self.client.logout()
         response = self.client.get('/note/delete/{slug}/'.format(slug=self.slug))
@@ -124,9 +123,40 @@ class DeletePreachingPageTest(TestCase):
 
 
 class PreachingDetailViewTest(TestCase):
+    slug = ''
+    
+    def setUp(self):
+        user = models.CustomUser.objects.create(username='admin')
+        user.set_password('admin')
+        user.save()
+        
+        self.client.login(username='admin', password='admin')
+
+        data={'title': 'test', 'text': 'test', 'date': date.today(), 'tags': 'test' }
+        self.client.post('/note/add/', data)
+        
+        preaching = Preaching.objects.all().first()
+        self.slug = preaching.slug
+
+
+    def test_preaching_detail_url_resolves_to_preaching_view(self):
+        found = resolve('/note/{slug}/'.format(slug=self.slug))
+        self.assertEqual(found.func.view_class, PreachingDetailView)
+
+    def test_preaching_detail_page_returns_correct_html(self):
+        response = self.client.get('/note/{slug}/'.format(slug=self.slug))
+        self.assertTemplateUsed(response, 'preachings/preaching_detail.html')
+
+    def test_success_status_code_preaching_detail_page(self):
+        response = self.client.get('/note/{slug}/'.format(slug=self.slug))
+        self.assertEqual(response.status_code, 200)
+
+    def test_status_code_for_non_existing_slug(self):
+        response = self.client.get('/note/delete/{slug}/'.format(slug='random'))
+        self.assertEqual(response.status_code,404)
+
+class TaggedPreachingListViewTest(TestCase):
     pass
 
     #path('note/update/<slug:slug>/', PreachingUpdate.as_view(), name='preaching_update'),
-    #path('note/<slug:slug>/', PreachingDetailView.as_view(), name='preaching_detail'),
-
     #path('<str:tag>/', TaggedPreachingList.as_view(), name='tagged_preaching_list'),

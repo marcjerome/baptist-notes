@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from users import models
 from django.template.loader import render_to_string
-from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView
+from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView, TaggedPreachingList
 from .models import Preaching, Tag
 
 class HomePageTest(TestCase):
@@ -80,7 +80,6 @@ class CreatePreachingPageTest(TestCase):
         #self.assertContains(response, 'This field is required.', html=False)
     
 class DeletePreachingPageTest(TestCase):
-    slug = ''
     
     def setUp(self):
         user = models.CustomUser.objects.create(username='admin')
@@ -123,7 +122,6 @@ class DeletePreachingPageTest(TestCase):
 
 
 class PreachingDetailViewTest(TestCase):
-    slug = ''
     
     def setUp(self):
         user = models.CustomUser.objects.create(username='admin')
@@ -156,7 +154,35 @@ class PreachingDetailViewTest(TestCase):
         self.assertEqual(response.status_code,404)
 
 class TaggedPreachingListViewTest(TestCase):
-    pass
 
+    def setUp(self):
+        user = models.CustomUser.objects.create(username='admin')
+        user.set_password('admin')
+        user.save()
+
+        tag = Tag(title='thisisatest')
+        tag.save()
+
+        preaching = Preaching.objects.create(user=user, title='testtitlee', text='test', date=date.today(), privacy=False)
+       
+        preaching.tags.add(tag)
+
+        self.tag_title = tag.title
+
+    def test_success_status_code_tagged_preaching_list_page(self):
+        response = self.client.get('/tag/{tag}/'.format(tag=self.tag_title))
+        self.assertEqual(response.status_code, 200)
+
+    def test_tagged_preaching_list_page_returns_correct_html(self):
+        response = self.client.get('/tag/{tag}/'.format(tag=self.tag_title))
+        self.assertTemplateUsed(response, 'preachings/index_preaching_list.html')
+
+
+    def test_tagged_preaching_url_resolves_to_tagged_preaching_list_view(self):
+        found = resolve('/tag/{tag}/'.format(tag=self.tag_title))
+        self.assertEqual(found.func.view_class, TaggedPreachingList)
+
+
+#To Do:
     #path('note/update/<slug:slug>/', PreachingUpdate.as_view(), name='preaching_update'),
-    #path('<str:tag>/', TaggedPreachingList.as_view(), name='tagged_preaching_list'),
+

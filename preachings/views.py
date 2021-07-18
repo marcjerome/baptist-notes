@@ -86,10 +86,8 @@ class TaggedPreachingList(ListView):
 
 
 def tag_suggestions(request):
-    print('inside only ')
     if request.method == 'POST':
         data = json.loads(request.body) 
-
         try:
             tags = Tag.objects.filter(title__icontains = data['keyword'])
             response_data = [tag.title for tag in tags]
@@ -98,7 +96,6 @@ def tag_suggestions(request):
             return JsonResponse('')
       
     else:
-        print('not ajax Test')
         return HttpResponse('Test')
 
 

@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from users import models
 from django.template.loader import render_to_string
-from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView, TaggedPreachingList
+from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView, TaggedPreachingList, PreachingUpdate
 from .models import Preaching, Tag
 
 class HomePageTest(TestCase):
@@ -159,7 +159,9 @@ class TaggedPreachingListViewTest(TestCase):
         user = models.CustomUser.objects.create(username='admin')
         user.set_password('admin')
         user.save()
-
+ 
+        self.client.login(username='admin', password='admin')
+        
         tag = Tag(title='thisisatest')
         tag.save()
 
@@ -183,6 +185,69 @@ class TaggedPreachingListViewTest(TestCase):
         self.assertEqual(found.func.view_class, TaggedPreachingList)
 
 
-#To Do:
-    #path('note/update/<slug:slug>/', PreachingUpdate.as_view(), name='preaching_update'),
+
+class PreachingUpdateViewTest(TestCase):
+    def setUp(self):
+        user = models.CustomUser.objects.create(username='admin')
+        user.set_password('admin')
+        user.save()
+
+        user2 = models.CustomUser.objects.create(username='admin2')
+        user2.set_password('admin2')
+        user2.save()
+
+        self.client.login(username='admin', password='admin')
+
+        tag = Tag(title='thisisatest')
+        tag.save()
+
+        preaching = Preaching.objects.create(user=user, title='testtitlee', text='test', date=date.today(), privacy=False)
+       
+        preaching.tags.add(tag)
+
+        self.slug = preaching.slug
+
+
+        preaching2 = Preaching.objects.create(user=user, title='testtitlee2', text='test2', date=date.today(), privacy=False)
+       
+        preaching2.tags.add(tag)
+
+        self.slug2 = preaching2.slug
+
+    def test_success_status_code_preaching_update_page(self):
+        response = self.client.get('/note/update/{slug}/'.format(slug=self.slug))
+        self.assertEqual(response.status_code, 200)
+
+    def test_preaching_update_page_returns_correct_html(self):
+        response = self.client.get('/note/update/{slug}/'.format(slug=self.slug))
+        self.assertTemplateUsed(response, 'preachings/preaching_update.html')
+
+    def test_preaching_update_page_url_resolves_to_preaching_update_view(self):
+        found = resolve('/note/update/{slug}/'.format(slug=self.slug))
+        self.assertEqual(found.func.view_class, PreachingUpdate)
+
+    def test_redirect_status_code_preaching_delete_page_user_unauthenticated(self):
+        self.client.logout()
+        response = self.client.get('/note/update/{slug}/'.format(slug=self.slug))
+        self.assertEqual(response.status_code, 302)
+
+
+    def test_cant_update_preaching__of_other_publishers(self):
+        self.client.login(username='admin2', password='admin2')
+        data = {'title': 'update', 'text': 'test', 'date': date.today(), 'tags': 'test' }
+        self.client.post('/note/update/{slug}/'.format(slug=self.slug), data)
+        preaching = Preaching.objects.filter(title='update').first()
+        self.assertIsNone(preaching)
+
+    def test_can_update_own_published_preaching(self):
+        data = {'title': 'update', 'text': 'test', 'date': date.today(), 'tags': 'test' }
+        self.client.post('/note/update/{slug}/'.format(slug=self.slug2), data)
+        preaching = Preaching.objects.filter(title='update').first()
+        self.assertIsNotNone(preaching)
+    
+    def test_redirect_to_preaching_detail_after_preaching_update(self):
+        data = {'title': 'update', 'text': 'test', 'date': date.today(), 'tags': 'test' }
+        response = self.client.post('/note/update/{slug}/'.format(slug=self.slug2), data, follow=True)
+        self.assertTemplateUsed(response, 'preachings/preaching_detail.html')
+
 

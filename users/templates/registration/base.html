@@ -1,42 +1,60 @@
+{%load static%}
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Baptist Notes</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
-            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
-            crossorigin="anonymous">
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-              integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
-              integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
-              integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      
+      <title>Baptist Notes</title>
+      <link rel="stylesheet" href="{% static '/css/tailwind/tailwind.css' %}">
+      
     </head>
 
     <body>
         
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand ml-4" href="{% url 'index_preaching_list'%}">Baptist Notes</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'index_preaching_list' %}" id="home-link">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">About</a>
-                </li>
-
-              </ul>
+      <div class="overflow-x-hidden  text bg-gray-100 flex flex-col h-screen">
+        <nav class=" px-6 py-4 bg-white shadow  w-full flex-none">
+            <div class="container flex flex-col mx-auto md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <a href="{% url 'index_preaching_list' %}" class="text-xl font-bold text-gray-800 md:text-2xl">Baptist Notes</a>
+                    </div>
+                    <div>
+                        <button type="button" class="block text-gray-800 hover:text-gray-600 focus:text-gray-600 focus:outline-none md:hidden">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+                                <path d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-col hidden md:flex md:flex-row md:-mx-4">
+                    <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">About</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'user_detail' pk=5 %}" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a>    
+                    <a href="{% url 'logout_confirmation' %}" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Logout</a>
+                    {%else%}
+                    <a href="{% url 'login' %}"  class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Login</a>
+                    <a href="{% url 'register' %}" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign up</a>
+                    {%endif%}
+                </div>
             </div>
-          </nav>
-        <div class=" container-fluid row p-5">
+        </nav>
+        <div class="flex flex-grow">
             {%block content%}
+                
             {%endblock%}
         </div>
+        <footer class="px-6 py-2 text-gray-100 bg-gray-800 flex-none">
+            <div class="container flex flex-col items-center justify-between mx-auto md:flex-row">
+              <a href="{% url 'index_preaching_list' %}" class="text-2xl font-bold">Baptist Notes<span class="hidden md:visible lg:visible text-base text-center ">- Based only on the scriptures,the sole authority for faith and practice</span>.</a>
+              <span class="text-base text-center mt-2 align-middle mg:hidden lg:hidden">Based only on the scriptures,the sole authority for faith and practice</span>
+                <p class="mt-2 md:mt-0">All rights reserved 2020-2021.</p>
+                <div class="flex mt-4 mb-2 -mx-2 md:mt-0 md:mb-0">
+                       Version: Alpha
+                </div>
+            </div>
+        </footer>
+    </div>
+      
     </body>
 </html>

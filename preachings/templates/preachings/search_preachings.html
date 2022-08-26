@@ -1,0 +1,102 @@
+{% extends 'preachings/base.html'%}
+{% load static %}
+{% block content%}
+    {%if preaching_list.count > 0%}
+        <div class="container grid grid-cols-12  px-3 mx-auto">
+            <!--
+            <div class="col-span-12 mt-2">
+                <img class="object-cover h-48 w-full" src="{%static 'preachings/images/banner.png'%}">
+            </div>
+            -->
+            
+            <div class="col-span-12 md:col-span-9 lg:col-span-9 flex-grow mx-3">
+                <div class="mt-8 flex flex-row flex-wrap justify-between">
+                    <div class="text-xl font-bold text-gray-700 md:text-2xl">
+                        Search results for '{{search_text}}'
+                    </div>                   
+                </div>
+                
+                <div class="flex flex-col py-3">
+                    {% for preaching in preaching_list%}
+                    <article class="flex-grow  px-6 py-6 bg-white rounded-lg shadow-md mb-4">
+                        <div class="flex flex-row justify-between">
+                            <span class="font-light text-gray-600">{{ preaching.date|date}}</span>
+                            <div class="flex flex-row space-x-2">
+                                {%for tag in preaching.tags.all %}
+                                <a href="{% url 'tagged_preaching_list' tag.title %}" class="text-white bg-gray-600 rounded font-bold px-2 flex-1">{{tag.title}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="py-1 font-bold text-xl pt-4">
+                            <a href="{% url 'preaching_detail' slug=preaching.slug %}">{{preaching.title}}</a> 
+                        </div>
+                        <!--<p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor delectus earum recusandae voluptates accusantium? Molestias tempore voluptatibus vero natus, suscipit iste maxime. Vero provident recusandae repudiandae hic deleniti fugit sint...
+                        </p>
+                        -->
+                        <div class="flex flex-row justify-between pt-3">
+                            <div>
+                                <a href="{% url 'preaching_detail' slug=preaching.slug %}" class="text-blue-500 hover:underline">Read More</a>
+                            </div>
+                            <a href="{% url 'user_detail' preaching.user.id%}" class="font-bold text-gray-700 hover:underline">{% if preaching.user.get_full_name %}{{preaching.user.get_full_name}}{% endif %}</a>
+                        </div>
+    
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-span-12 md:col-span-3 lg:col-span-3 md:mt-5 flex flex-col py-3 mx-3">
+                
+                {% if user.is_authenticated %}
+                <article class="p-4 bg-white shadow-md flex-row justify-between">
+                    <h3 class="font-bold">Hello, {{user.get_full_name}}!</h3>
+                    <!--<h3 class="text-white">View All</h3>-->
+                 </article>
+                 <div class="p-4  bg-white shadow-md  p-3 mb-3 ">
+                    <p class="mb-3">You can edit your profile and change your personal information. You can also add your bio to display who you are when you post something.</p>
+                    <a href="{% url 'user_update' user.pk %}" class="border text-center hidden lg:block self-end border-gray-700 bg-gray-700 text-white rounded-md px-4 mr-2 py-1.5 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline">
+                        Edit Profile
+                    </a>
+                 </div>
+                {% endif %}
+
+                <article class="p-4 bg-white shadow-md flex flex-row justify-between">
+                    <h3 class="font-bold ">Top Authors</h3>
+                    <!--<h3 class="text-white">View All</h3>-->
+                </article>
+                 <div class="p-4 bg-white shadow-md  p-3">
+                     <ul>
+                        {%for user in top_users %} 
+                        <li><a href="{% url 'user_detail' user.id%}">{{user.get_full_name}}</a></li>
+                         {%endfor %}
+                     </ul>
+                </div>
+
+                <article class="p-4 bg-white shadow-md mt-3 flex-row justify-between">
+                   <h3 class="font-bold">Top Tags</h3>
+                   <!--<h3 class="text-white">View All</h3>-->
+                </article>
+                <div class="p-4  bg-white shadow-md  p-3">
+                    <ul>
+                        {%for tag in top_tags %}
+                        <li><a href="{% url 'tagged_preaching_list' tag.title %}">{{tag.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                
+
+       
+           
+            </div>
+            
+        </div>
+    {% else %}
+    <div class="container block px-3 mx-auto my-auto">
+        <div class="">
+            <h1 class="text-2xl lg:text-3xl md:text-2xl text-center font-bold">No search results for '{{search_text}}'</h1>
+        </div>
+    </div>
+    {%endif%}
+{%endblock%}

@@ -1,56 +1,50 @@
-{%include 'preachings/base.html'%}
-{% load static%}
+{% extends 'preachings/base.html'%}
+{% load static %}
 {%block content%}
-    <link rel="stylesheet" href="{% static 'preachings/css/preaching_create.css' %}">
-    <header id="header" class="container-fluid w-75 mx-auto mt-1 mb-5">
-        <h1><b>Write a Post</b></h1>
-    </header>
+    <div class="container block mx-auto px-3">
+        <header id="header" class="py-3">
+            <h1 class="font-bold text-2xl">Write a Post</h1>
+        </header>
 
-    <form action="{% url 'preaching_create' %}" method="POST" id="form" class="form-group w-75 mx-auto">
-        {% csrf_token %}
-        <div class="container ml-auto mr-auto"></div>
-            <ul class="container-fluid list-unstyled">
-                <label class="mb-2"for="title">Title</label>
-                <li id="title" class="">{{ form.title }}</li>
-                <label  class="mb-2 mt-4" for="body">Body</label>
-                <li id="body" class="contact">{{ form.text }}</li>
-                <label  class="mb-2 mt-4" for="date">Date</label>
-                <li id="date" class="contact">{{ form.date }}</li>
-                <label  class="mb-2 mt-4 " for="privacy">Private</label>
-                <li  class="mb-2" id="privacy" class="contact">{{ form.privacy }}</li>
-                <label  class="mb-2 mt-4 " for="tags">Tags</label>
-                <div class="row container">               
-                    <div class="col-4">
-                        {{ form.tags }}
-                        <input type="text" id="id_tag" >
-                        <input type="button" onClick="addTag()" class="btn btn-info" value="Add Tag" id="add_tag">
-                    </div>
-                    <div class="col-4">
-                        <ul class="list-inline" id="tag_list"></ul>
+        <form action="{% url 'preaching_create' %}" method="POST" id="form" class="py-3">
+            {% csrf_token %}
+            <div class="">
+                <ul class="container">
+                    <label class="py-3 font-bold" for="title">Title</label>
+                    <li id="title" class="py-3">{{ form.title }}</li>
+                    <label  class="py-3 font-bold" for="body">Content</label>
+                    <li id="body" class="py-3">{{ form.text }}</li>
+                    <label  class="py-3 font-bold py-3" for="tags">Tags</label>
+                    <div class="py-3">               
+                        <div class="col-4">
+                            {{ form.tags }}
+                            <input type="text" id="id_tag" >
+                            <input type="button" onClick="addTag()" class="border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 mr-2 py-1.5 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline" value="Add Tag" id="add_tag">
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-inline" id="tag_list"></ul>
 
-                    </div>  
-                    <div class="col-4" >
-                        <ul class="list-inline" id="tag_list_final"></ul>
-                    </div> 
-                   
-
-                </div>
-
-                <ul id="tag-list" class="list-inline">
+                        </div>  
+                        <div class="col-4" >
+                            <ul class="list-inline" id="tag_list_final"></ul>
+                        </div> 
                     
+
+                    </div>
+
+                    <ul id="tag-list" class="list-inline">
+                        
+                    </ul>
+
+                    <li id="message" ><input type="submit" class="border border-gray-700 bg-gray-700 text-white rounded-md px-4 mr-2 py-1.5 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline" value="Add Post"></li>
                 </ul>
+            </div>
+        </form>
+    </div>
 
-                <li id="message" class="mt-2 mb-5"><input type="submit" class="btn btn-primary" value="Post"></li>
-            </ul>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script>var csrftoken = '{{ csrf_token }}';</script>
+    <script type="text/javascript" src="{% static 'preachings/js/preaching_create.js'%}"></script>
 
-            
-         </div>
-    </form>
-
-
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-<script>var csrftoken = '{{ csrf_token }}';</script>
-<script type="text/javascript" src="{% static 'preachings/js/preaching_create.js'%}"></script>
-
-{%endblock%}
+    {%endblock%}

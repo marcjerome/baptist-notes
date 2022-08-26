@@ -3,7 +3,7 @@ from .models import Preaching, Tag
 
 class PreachingAdmin(admin.ModelAdmin):
     list_display= ('title', 'date')
-    fields = ['title', 'text', 'date', 'privacy', 'tags']
+    fields = ['title', 'text', 'privacy', 'tags']
 
     def save_model(self,request,obj,form,change):
         obj.user = request.user

@@ -1,0 +1,48 @@
+{% extends 'preachings/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+<div class="container shadow-md  mx-2 my-2 bg-white md:my-auto  md:my-auto md:mx-auto  px-4 py-4 md:w-1/4">
+    <h1 class="text-xl font-bold text-gray-700 md:text-2xl mb-2">Edit Profile</h1>
+    <div class="w-full mx-auto">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="text-red-600 my-2">{{ form.non_field_errors }}</div>
+            <ul class="container flex flex-col flex-wrap">
+                <div>
+                    <div class="text-red-600 my-2">{{ form.non_field_errors }}</div>
+                    <label class="py-3 font-bold" for="username">Username</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.username.html_name}}" id="{{form.username.id_for_label}}" value="{{form.username.value}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.first_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">First Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.first_name.html_name}}" id="{{form.first_name.id_for_label}}" value="{{form.first_name.value}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.middle_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Middle Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.middle_name.html_name}}" id="{{form.middle_name.id_for_label}}" value="{{form.middle_name.value|default_if_none:''}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.last_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Last Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.last_name.html_name}}" id="{{form.last_name.id_for_label}}" value="{{form.last_name.value}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.bio.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Bio</label>
+                    <li id="title" class="py-3"><textarea class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.bio.html_name}}" id="{{form.bio.id_for_label}}">{{form.bio.value}}</textarea></li>
+                </div>
+                
+                <input class="text-center border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-3 mr-2 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline" type="submit" value="Edit Profile">
+            </ul>
+            
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

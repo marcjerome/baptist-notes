@@ -1,13 +1,58 @@
-{% extends 'registration/base.html' %}
+{% extends 'preachings/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
 
-<div class="container bg-light p-4 border ">
-    <form method="post">{% csrf_token %}
-   
-        {{form | crispy}}
-        <input class=" btn btn-primary " type="submit" value="submit">
-     
-    </form>
+
+
+<div class="container  shadow-md  mx-2 my-2 bg-white md:my-auto md:mx-auto  px-4 py-4 md:w-1/4">
+    <h1 class="text-xl font-bold text-gray-700 md:text-2xl mb-2">Register</h1>
+    <div class="w-full mx-auto">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="text-red-600 my-2">{{ form.non_field_errors }}</div>
+            <ul class="container flex flex-col flex-wrap">
+                <div>
+                    <div class="text-red-600 my-2">{{ form.non_field_errors }}</div>
+                    <label class="py-3 font-bold" for="username">Username</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.username.html_name}}" id="{{form.username.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.first_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">First Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.first_name.html_name}}" id="{{form.first_name.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.middle_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Middle Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.middle_name.html_name}}" id="{{form.middle_name.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.last_name.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Last Name</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="text" name="{{form.last_name.html_name}}" id="{{form.last_name.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.email.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Email</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="email" name="{{form.email.html_name}}" id="{{form.email.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.password1.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Password</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="password" name="{{form.password1.html_name}}" id="{{form.password1.id_for_label}}"></li>
+                </div>
+                <div>
+                    <div class="text-red-600 my-2">{{ form.password2.errors }}</div>
+                    <label class="py-3 font-bold" for="username">Confirm Password</label>
+                    <li id="title" class="py-3"><input class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" type="password" name="{{form.password2.html_name}}" id="{{form.password2.id_for_label}}"></li>
+                </div>
+
+                <input class="text-center border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-3 mr-2 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline" type="submit" value="Register">
+            </ul>
+            
+        </form>
+    </div>
 </div>
+
+
 {% endblock %}

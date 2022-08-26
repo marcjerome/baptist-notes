@@ -20,13 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dop$t3rdimd$^)+g$r=+mw(&@6s14f4ozm1qg8w3=hquw)9q1x'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     #'django_elasticsearch_dsl',
     'preachings',
     'ckeditor',
+    'rest_framework',
     
 ]
 
@@ -84,12 +87,12 @@ WSGI_APPLICATION = 'preachingcompilation.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'preachingcompilation',
-        'USER': 'marc',
-        'PASSWORD': 'marcspacejerome',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST':  os.environ.get("SQL_HOST", "localhost"),
+        'PORT': 5432,
     }
 }
 
@@ -131,7 +134,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'preachingcompilation/static'),
+)
 STATIC_URL = '/static/'
+
+
 
 CKEDITOR_CONFIGS = {
     'default': {

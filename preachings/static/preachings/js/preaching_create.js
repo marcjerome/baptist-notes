@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
             li.setAttribute('id', tag);
             let spanLi2 = document.createElement('span');
             spanLi2.textContent = tag;
-            spanLi2.setAttribute('class', 'bg-dark text-white p-2 ');
+            spanLi2.setAttribute('class', ' text-black p-2 ');
             spanLi2.setAttribute('name', 'tags');
             let spanli3 = document.createElement('span');
             spanli3.textContent = 'X';
-            spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-white')
+            spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-red-500')
             spanli3.setAttribute('onClick', 'remove(\'' + tag + '\')');
             li.appendChild(spanLi2);
             li.appendChild(spanli3);
@@ -60,14 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 tagSuggestionList.removeChild(tagSuggestionList.lastChild);
             }
             let li_1 = document.createElement('li');
-            li_1.setAttribute('class', 'bg-dark text-white p-2')
+            li_1.setAttribute('class', 'text-black px-2 py-2')
             li_1.textContent = 'Suggestions: '
             tagSuggestionList.appendChild(li_1);
             for(let tag of data.tag){
                 let li_2 = document.createElement('li');
                 let spanLi2 = document.createElement('span');
                 spanLi2.textContent = 'Add Tag';
-                spanLi2.setAttribute('class', 'btn btn-info ml-2 p-2');
+                spanLi2.setAttribute('class', 'border border-gray-700 bg-gray-700 text-white rounded-md px-4 mr-2 ml-3 py-1.5 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline');
                 li_2.setAttribute('class', 'border bg-light p-2 ');
                 spanLi2.setAttribute('name', tag);
                 spanLi2.setAttribute('onClick', 'suggestionAddTag(\'' + tag + '\')');
@@ -102,11 +102,11 @@ function suggestionAddTag(tag){
     li.setAttribute('id', tag);
     let spanLi2 = document.createElement('span');
     spanLi2.textContent = tag;
-    spanLi2.setAttribute('class', 'bg-dark text-white p-2 ');
+    spanLi2.setAttribute('class', 'bg-dark text-black p-2 ');
     spanLi2.setAttribute('name', 'tags');
     let spanli3 = document.createElement('span');
     spanli3.textContent = 'X';
-    spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-white')
+    spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-red-500')
     spanli3.setAttribute('onClick', 'remove(\'' + tag + '\')');
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
@@ -123,12 +123,12 @@ function addTag(){
     li.setAttribute('id', value);
     let spanLi2 = document.createElement('span');
     spanLi2.textContent = value;
-    spanLi2.setAttribute('class', 'bg-dark text-white p-2 mt-2');
+    spanLi2.setAttribute('class', 'bg-dark text-black p-2 mt-2');
     spanLi2.setAttribute('name', 'tags');
     let spanli3 = document.createElement('span');
     spanli3.textContent = 'X';
     spanli3.setAttribute('onClick', 'remove(\'' + value + '\')');
-    spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-white')
+    spanli3.setAttribute('class', 'bg-danger ml-0 p-2 text-black')
     li.appendChild(spanLi2);
     li.appendChild(spanli3);
     formValueArray.push(value);

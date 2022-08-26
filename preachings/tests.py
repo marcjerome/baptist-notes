@@ -9,6 +9,26 @@ from django.template.loader import render_to_string
 from .views import PreachingList, PreachingDelete, PreachingDetailView, PreachingCreateView, TaggedPreachingList, PreachingUpdate
 from .models import Preaching, Tag
 
+
+
+class PreachingModelTest(TestCase):
+    
+    def test_saving_and_retrieving_preaching(self):
+        user = models.CustomUser.objects.create(username='admin')
+        user.set_password('admin')
+        user.save()
+ 
+        self.client.login(username='admin', password='admin')
+        
+        tag = Tag(title='thisisatest')
+        tag.save()
+
+        preaching = Preaching.objects.create(user=user, title='testtitlee', text='test', date=date.today(), privacy=False)
+
+        preachings = Preaching.objects.all()
+        self.assertEqual(preachings.count(), 1)
+
+
 class HomePageTest(TestCase):
     def test_root_url_resolves_to_homepage_view(self):
         found = resolve('/')
@@ -28,11 +48,11 @@ class CreatePreachingPageTest(TestCase):
         self.assertEqual(found.func.view_class, PreachingCreateView)
 
     def test_success_status_code_preaching_create_page_user_authenticated(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(username='admin3', email="admin3@admin.com")
         user.set_password('admin')
         user.save()
 
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin3@admin.com', password='admin')
         response = self.client.get('/note/add/')
         self.assertEqual(response.status_code, 200)
     
@@ -41,11 +61,11 @@ class CreatePreachingPageTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_create_preaching_page_returns_correct_html(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(email='admin@admin.com')
         user.set_password('admin')
         user.save()
 
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin@admin.com', password='admin')
         response = self.client.get('/note/add/')
         self.assertTemplateUsed(response, 'preachings/preaching_create.html')
     
@@ -65,13 +85,14 @@ class CreatePreachingPageTest(TestCase):
         self.assertEqual(response.status_code,302)
         
     def test_post_create_preaching_invalid(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(email='admin2@admin.com')
         user.set_password('admin')
         user.save()
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin2@admin.com', password='admin')
         
         data={'title': 'test', 'text': 'test', 'tags': 'test' }
-        response = self.client.post('/note/add/', data)
+        response = self.client.post('/note/add/', data, follow=True)
+        
         
         self.assertEqual(response.status_code,200)
         
@@ -82,11 +103,11 @@ class CreatePreachingPageTest(TestCase):
 class DeletePreachingPageTest(TestCase):
     
     def setUp(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(username='admin', email='admin@admin.com')
         user.set_password('admin')
         user.save()
         
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin@admin.com', password='admin')
 
         data={'title': 'test', 'text': 'test', 'date': date.today(), 'tags': 'test' }
         self.client.post('/note/add/', data)
@@ -108,8 +129,8 @@ class DeletePreachingPageTest(TestCase):
         self.assertEqual(response.status_code, 200)
    
     def test_post_delete_preaching_valid(self):     
-        response = self.client.post('/note/delete/{slug}/'.format(slug=self.slug))
-        self.assertEqual(response.status_code,302)
+        response = self.client.post('/note/delete/{slug}/'.format(slug=self.slug), follow=True)
+        self.assertTemplateUsed(response, 'preachings/preaching_delete_success.html')
         
     def test_get_delete_preaching_invalid(self):
         response = self.client.get('/note/delete/{slug}/'.format(slug='random'))
@@ -124,11 +145,11 @@ class DeletePreachingPageTest(TestCase):
 class PreachingDetailViewTest(TestCase):
     
     def setUp(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(username='admin', email='admin@admin.com')
         user.set_password('admin')
         user.save()
         
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin@admin.com', password='admin')
 
         data={'title': 'test', 'text': 'test', 'date': date.today(), 'tags': 'test' }
         self.client.post('/note/add/', data)
@@ -188,15 +209,15 @@ class TaggedPreachingListViewTest(TestCase):
 
 class PreachingUpdateViewTest(TestCase):
     def setUp(self):
-        user = models.CustomUser.objects.create(username='admin')
+        user = models.CustomUser.objects.create(username='admin', email='admin@admin.com')
         user.set_password('admin')
         user.save()
 
-        user2 = models.CustomUser.objects.create(username='admin2')
+        user2 = models.CustomUser.objects.create(username='admin2', email='admin2@admin.com')
         user2.set_password('admin2')
         user2.save()
 
-        self.client.login(username='admin', password='admin')
+        self.client.login(email='admin@admin.com', password='admin')
 
         tag = Tag(title='thisisatest')
         tag.save()
@@ -233,7 +254,7 @@ class PreachingUpdateViewTest(TestCase):
 
 
     def test_cant_update_preaching__of_other_publishers(self):
-        self.client.login(username='admin2', password='admin2')
+        self.client.login(email='admin2@admin.com', password='admin2')
         data = {'title': 'update', 'text': 'test', 'date': date.today(), 'tags': 'test' }
         self.client.post('/note/update/{slug}/'.format(slug=self.slug), data)
         preaching = Preaching.objects.filter(title='update').first()
@@ -249,5 +270,3 @@ class PreachingUpdateViewTest(TestCase):
         data = {'title': 'update', 'text': 'test', 'date': date.today(), 'tags': 'test' }
         response = self.client.post('/note/update/{slug}/'.format(slug=self.slug2), data, follow=True)
         self.assertTemplateUsed(response, 'preachings/preaching_detail.html')
-
-

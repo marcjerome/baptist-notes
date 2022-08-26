@@ -5,10 +5,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.http import JsonResponse, HttpResponse
+from django.contrib.postgres.search import SearchVector
 from .forms import PreachingForm
 import json
 from .models import Preaching, Tag
+from django.contrib.auth import get_user_model
 #from .documents import PreachingDocument
+
+
+
+def preachingDeleteSuccess(request):
+    return render(request, 'preachings/preaching_delete_success.html')
 
 class PreachingDetailView(DetailView):
     model = Preaching
@@ -16,7 +23,6 @@ class PreachingDetailView(DetailView):
     context_object_name = 'preachings'
     slug_url_kwarg = 'slug'
 
-    #Solve preaching object is not iterable in .html when its only one
 
 class PreachingCreateView(LoginRequiredMixin, CreateView):
     model = Preaching
@@ -40,11 +46,17 @@ class PreachingCreateView(LoginRequiredMixin, CreateView):
 class PreachingList(ListView):
     model = Preaching
     template_name = 'preachings/index_preaching_list.html'
+    ordering = ['-date']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['top_tags'] = Tag.top_tags.all()[0:10]
+        context['top_users'] = get_user_model().top_user.all()[0:10]
+        return context
 
 class PreachingDelete(LoginRequiredMixin, DeleteView):
     model = Preaching
-    success_url = reverse_lazy('index_preaching_list')
-    template_name = 'preachings/preaching_confirm_delete.html'
+    success_url = reverse_lazy('preaching_delete_success')
     slug_field = 'slug' 
 
     def dispatch(self, request, *args, **kwargs):
@@ -74,8 +86,12 @@ class PreachingUpdate(LoginRequiredMixin, UpdateView):
             kwargs.update({'instance': self.object})
         preaching = kwargs['instance']
         tags = [tag.title for tag in preaching.tags.all()]
-        kwargs['initial'] = {'tags': ','.join(tags)}
+        print('date')
+        print(preaching.date)
+        kwargs['initial'] = {'tags': ','.join(tags), 'pk':preaching.pk}
         return kwargs
+
+
 
 class TaggedPreachingList(ListView):
     template_name = 'preachings/index_preaching_list.html'
@@ -83,6 +99,27 @@ class TaggedPreachingList(ListView):
     def get_queryset(self):
         self.tag = Tag.objects.get(title__iexact = self.kwargs['tag'])
         return Preaching.objects.filter(tags=self.tag)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['top_tags'] = Tag.top_tags.all()[0:10]
+        context['top_users'] = get_user_model().top_user.all()[0:10]
+        return context
+
+
+class SearchPreachingList(ListView):
+    template_name = 'preachings/search_preachings.html'
+
+    def get_queryset(self):
+        search_text = self.request.GET['search_text']
+        return Preaching.objects.annotate(search=SearchVector('title', 'text')).filter(search=search_text)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_text'] = self.request.GET['search_text']
+        context['top_tags'] = Tag.top_tags.all()[0:10]
+        context['top_users'] = get_user_model().top_user.all()[0:10]
+        return context
 
 
 def tag_suggestions(request):
@@ -97,13 +134,3 @@ def tag_suggestions(request):
       
     else:
         return HttpResponse('Test')
-
-
-def search(request):
-    pass
-    #q = request.GET.get('q')
-    #preachings = PreachingDocument.search().filter("match", title=q)
-    #preachings = PreachingDocument.search().filter("match", text=q)
-    #preachings = PreachingDocument.search().filter("match", tags=q)#not sure for manytomanyfield if how
-    #preaching = preachings.to_queryset()
-    #sreturn render(request, 'preachings/search.html', {'preachings':preaching})

@@ -1,16 +1,96 @@
-{% include 'preachings/base.html'%}
+{%extends 'preachings/base.html' %}
 
 {% block content %}
-{{user.get_full_name}}
-{{user.bio}}
-{% for preaching in preachings%}
-    {{preaching.title}}
-    {{preaching.date}}
+    <div class="container md:mx-auto lg:mx-auto w-full mt-2 ">
+        {% if messages %}
+        {% for message in messages %}
+		<div class="alert flex flex-row items-center bg-green-200 p-5 rounded border-b-2 border-green-300 mb-2">
+			<div class="alert-icon flex items-center bg-green-100 border-2 border-green-500 justify-center h-10 w-10 flex-shrink-0 rounded-full">
+				<span class="text-green-500">
+					<svg fill="currentColor"
+						 viewBox="0 0 20 20"
+						 class="h-6 w-6">
+						<path fill-rule="evenodd"
+							  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+							  clip-rule="evenodd"></path>
+					</svg>
+				</span>
+			</div>
+			<div class="alert-content ml-4">
+				<div class="alert-title font-semibold text-lg text-green-800">
+					Success
+				</div>
+				<div class="alert-description text-sm text-green-600">
+                    {{ message }}
+				</div>
+			</div>
+		</div>
+        {% endfor %}
+        {% endif %}
 
-    {%for tag in preaching.tags.all%}
-        {{tag.title}}
-    {% endfor %}
-{% endfor %}
-  
+
+        <div class=" px-2 py-2 bg-white flex flex-col md:mx-auto lg:mx-auto ">
+
+             <div class="flex flex-row flex-wrap justify-between">
+                <div class="text-xl font-bold">{% if user.get_full_name %}{{user.get_full_name}} {%else%} <span class="bg-red-500 text-white py-2 px-2 text-base ">Please Update your profile!</span> {%endif%}</div>
+                {% if user == request.user%}
+                <div class="flex flex-row flex-wrap">
+                    <a href="{% url 'user_update' user.pk %}" class="border hidden lg:block self-end border-gray-700 bg-gray-700 text-white rounded-md px-4 mr-2 py-1.5 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline">
+                        Edit Profile
+                    </a>
+                    <a href="{% url 'password_change' %}" class="border hidden lg:block self-end border-gray-700 bg-gray-700 text-white rounded-md px-4 mr-2 py-1.5 transition duration-500 ease select-none hover:bg-gray-800 focus:outline-none focus:shadow-outline">
+                        Change Password
+                    </a>
+                    <a href="{% url 'user_update' user.pk %}" class="lg:hidden mr-1 "><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg></a>
+                    <a href="{% url 'password_change' %}" class="lg:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                      </svg>
+                    </a>
+                </div>
+                {% endif %}
+                
+            </div>
+            <div class="text-l text-gray-800 font-medium">{{user.bio}}</div>
+            <p href="" class="px-2 font-bold mt-2 text-sm  py-3 bg-blue-800 text-white shadow-lg">{{user.get_number_of_published_posts }} posts published</p>
+            
+        </div>
+
+                    
+       <div class="flex flex-col mx-1 px-2 items-stretch md:mx-auto lg:mx-auto">
+            <div class="mt-8 flex flex-row flex-wrap justify-between">
+                <div class="text-xl font-bold text-gray-700 md:text-2xl mb-2">
+                    Posts
+                </div>
+            </div>
+
+            {% for preaching in preachings%}
+                    <article class="flex-grow  px-2 py-2 bg-white rounded-lg shadow-md mb-4">
+                        <div class="flex flex-row justify-between">
+                            <span class="font-light text-gray-600">{{preaching.date|date}}</span>
+                            <div class="flex flex-row space-x-2">
+                                {%for tag in preaching.tags.all %}
+                                <a href="{% url 'tagged_preaching_list' tag.title %}" class="text-white bg-gray-600 rounded font-bold px-2 flex-1">{{tag.title}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="py-1 font-bold text-xl pt-4">
+                            <a href="{% url 'preaching_detail' slug=preaching.slug %}">{{preaching.title}}</a> 
+                        </div>
+                        <div class="flex flex-row justify-between pt-3">
+                            <div>
+                                <a href="{% url 'preaching_detail' slug=preaching.slug %}" class="text-blue-500 hover:underline">Read More</a>
+                            </div>
+                            <a href="{% url 'user_detail' preaching.user.id%}" class="font-bold text-gray-700 hover:underline">{{user.get_full_name}}</a>
+                        </div>
+
+                    </article>
+            {% endfor %}
+       </div>
+
+    </div>
+    
+    
 {% endblock %}
 

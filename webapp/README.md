@@ -2,6 +2,6 @@
 Website for compilation of baptist sermons and others (A multi blog user )
 
 # To Do:
-- Fix design and layout
-- Add tests
-- Fix elasticsearch
+- <strike>Fix design and layout</strike>
+- <strike>Add tests</strike>
+- <strike>Fix elasticsearch (Elasticsearch removed from project)</strike> 
